@@ -2,8 +2,8 @@ name: PlatformIO CI
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*.*.*'
 
 jobs:
   build:
@@ -19,37 +19,26 @@ jobs:
           key: ${{ runner.os }}-pio
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
+          python-version: '3.11'
       - name: Install PlatformIO Core
         run: pip install --upgrade platformio
 
       - name: Clone private repo
-        run: git clone git@github.com:kenkit/esp32_mqtt_server.git
-
+        run: git clone https://oauth2:${{ secrets.WORKFLOW_ACTION }}@github.com/kenkit/esp32_mqtt_server.git
+        
       - name: Build PlatformIO Project
         run: pio run -d esp32_mqtt_server/ -e esp32-devkitc-v1
-
-      - name: Get project version
-        id: version
-        run: |
-          VERSION=$(pio project config --json-output --project-dir esp32_mqtt_server | jq -r '.platformio.version')
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-
+          
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_ACTION }}
         with:
-          tag_name: v${{ env.VERSION }}
-          release_name: Release v${{ env.VERSION }}
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
           body: |
-            Automated release of version ${{ env.VERSION }}
+            Automated release for ${{ github.ref }}
           draft: false
           prerelease: false
 
@@ -60,5 +49,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: esp32_mqtt_server/.pio/build/esp32-devkitc-v1/firmware.bin
-          asset_name: firmware-v${{ env.VERSION }}.bin
+          asset_name: firmware-${{ github.ref_name }}.bin
           asset_content_type: application/octet-stream
