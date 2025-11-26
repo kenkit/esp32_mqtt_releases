@@ -22,13 +22,9 @@ jobs:
           python-version: '3.11'
       - name: Install PlatformIO Core
         run: pip install --upgrade platformio
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-            ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Clone private repo
-        run: git clone git@github.com:kenkit/esp32_mqtt_server.git
+        run: git clone https://oauth2:${{ secrets.GITHUB_ACTIONS }}@github.com/kenkit/esp32_mqtt_server.git
         
       - name: Build PlatformIO Project
         run: pio run -d esp32_mqtt_server/ -e esp32-devkitc-v1
@@ -43,7 +39,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_ACTIONS }}
         with:
           tag_name: v${{ env.VERSION }}
           release_name: Release v${{ env.VERSION }}
@@ -55,7 +51,7 @@ jobs:
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_ACTIONS }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: esp32_mqtt_server/.pio/build/esp32-devkitc-v1/firmware.bin
