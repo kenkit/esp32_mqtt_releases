@@ -25,8 +25,8 @@ jobs:
 
       - name: Install PlatformIO Core
         run: pip install --upgrade platformio
-      - name: Install pylzss
-        run: pip install pylzss
+      - name: Install lzss
+        run: pip install lzss
       - name: Install crccheck
         run: pip install --upgrade crccheck
       - name: Setup SSH
