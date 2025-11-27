@@ -41,7 +41,7 @@ jobs:
         run: pio run -d esp32_mqtt_server/ -e esp32-devkitc-v1
 
       - name: Compress firmware
-        run: python3 lzss.py --encode esp32_mqtt_server/.pio/build/esp32-devkitc-v1/firmware.bin firmware.lzss
+        run: python3 compress_firmware.py --encode esp32_mqtt_server/.pio/build/esp32-devkitc-v1/firmware.bin firmware.lzss
 
       - name: Convert to OTA
         run: python3 bin2ota.py ESP32 firmware.lzss firmware.ota
