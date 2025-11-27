@@ -12,7 +12,12 @@ if len(sys.argv) != 4:
     print ("Usage: lzss.py --[encode|decode] infile outfile")
     sys.exit()
 
-lzss_functions = ctypes.CDLL(LZSS_SO_FILE)
+try:
+    lzss_functions = ctypes.CDLL(LZSS_SO_FILE)
+except OSError:
+    print(f"Error: Could not load the shared library '{LZSS_SO_FILE}'.")
+    print("Please ensure lzss.so (or lzss.dylib) is present and accessible.")
+    sys.exit(1)
 
 mode   = sys.argv[1]
 ifile  = sys.argv[2]
