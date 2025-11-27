@@ -15,9 +15,9 @@ with open(ifile, 'rb') as f_in:
     data = f_in.read()
 
 if mode == "--encode":
-    processed_data = lzss.compress(data)
+    processed_data =  lzss.compress(data)
 elif mode == "--decode":
-    processed_data = lzss.decompress(data)
+    processed_data =  lzss.decompress(data)
 else:
     print ("Error, invalid mode parameter, use --encode or --decode")
     sys.exit(1)
