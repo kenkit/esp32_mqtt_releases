@@ -11,6 +11,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/cache@v4
         with:
           path: |
@@ -34,6 +36,11 @@ jobs:
       - name: Build PlatformIO Project
         run: pio run -d esp32_mqtt_server/ -e esp32-devkitc-v1
 
+      - name: Get commit log
+        id: commit_log
+        run: |
+          echo "COMMIT_LOG=$(git log --pretty=format:'* %s' -n 10)" >> $GITHUB_ENV
+          
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -43,7 +50,8 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: |
-            Automated release for ${{ github.ref }}
+            **Changelog**
+            ${{ env.COMMIT_LOG }}
           draft: false
           prerelease: false
 
