@@ -30,7 +30,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Clone private repo
-        run: git clone git@github.com:kenkit/esp32_mqtt_server.git
+        run: git clone git@github.com:kenkit/esp32_mqtt_server.git Blink
       - name: Build PlatformIO Project
         run: pio run -d Blink/ -e esp32-devkitc-v1
 
