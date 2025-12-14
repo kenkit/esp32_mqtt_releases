@@ -37,8 +37,8 @@ jobs:
       - name: Build ESP8266 Pio Project
         run: pio run -d Blink/ -e esp8266
 
-      - name: Build ESP32 Pio Project
-        run: pio run -d Blink/ -e esp32-devkitc-v1
+      #      - name: Build ESP32 Pio Project
+      #        run: pio run -d Blink/ -e esp32-devkitc-v1
 
       - name: Build Changelog
         id: github_release
@@ -67,13 +67,12 @@ jobs:
           asset_path: Blink/.pio/build/esp8266/firmware.bin
           asset_name: firmware-esp8266-${{ github.ref_name }}.bin
           asset_content_type: application/octet-stream
-
-      - name: Upload ESP32 Firmware Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.WORKFLOW_ACTION }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: Blink/.pio/build/esp32-devkitc-v1/firmware.bin
-          asset_name: firmware-esp32-${{ github.ref_name }}.bin
-          asset_content_type: application/octet-stream
+#      - name: Upload ESP32 Firmware Release Asset
+#        uses: actions/upload-release-asset@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.WORKFLOW_ACTION }}
+#        with:
+#          upload_url: ${{ steps.create_release.outputs.upload_url }}
+#          asset_path: Blink/.pio/build/esp32-devkitc-v1/firmware.bin
+#          asset_name: firmware-esp32-${{ github.ref_name }}.bin
+#          asset_content_type: application/octet-stream
