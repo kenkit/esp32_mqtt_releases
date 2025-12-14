@@ -1,0 +1,6 @@
+{
+    "idf.pythonInstallPath": "D:\\Espressif\\tools\\idf-python\\3.11.2\\python.exe",
+    "idf.monitorPort": "COM9",
+    "idf.flashType": "JTAG",
+    "idf.portWin": "COM9"
+}

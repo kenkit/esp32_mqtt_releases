@@ -1,0 +1,22 @@
+{
+    "files.associations": {
+        "*.embeddedhtml": "html",
+        "*.js": "typescriptreact",
+        "*.kt": "gradle-kotlin-dsl",
+        "array": "cpp",
+        "chrono": "cpp",
+        "filesystem": "cpp",
+        "forward_list": "cpp",
+        "initializer_list": "cpp",
+        "list": "cpp",
+        "ranges": "cpp",
+        "span": "cpp",
+        "valarray": "cpp",
+        "vector": "cpp",
+        "xhash": "cpp",
+        "xstring": "cpp",
+        "xtree": "cpp",
+        "xutility": "cpp"
+    },
+    "idf.portWin": "COM16"
+}
