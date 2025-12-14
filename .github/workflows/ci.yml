@@ -25,7 +25,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y openssl libssl-dev
-          pip install --upgrade platformio pandas
+          pip install --upgrade platformio pandas intelhex
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.9.0
         with:
