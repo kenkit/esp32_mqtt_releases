@@ -44,7 +44,7 @@ jobs:
         id: blink_changelog
         run: |
           cd Blink
-          CHANGELOG=$(git log --oneline -n10)
+          CHANGELOG=$(git log --pretty=format:"%h - %an - %cd - %s" --date=format:'%Y-%m-%d %H:%M:%S' -n10)
           # Use heredoc to preserve newlines
           echo "changelog<<EOF" >> $GITHUB_OUTPUT
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
