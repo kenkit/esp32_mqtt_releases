@@ -40,11 +40,31 @@ jobs:
       #      - name: Build ESP32 Pio Project
       #        run: pio run -d Blink/ -e esp32-devkitc-v1
 
+      - name: Get Blink repo changelog
+        id: blink_changelog
+        run: |
+          cd Blink
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -z "$LATEST_TAG" ]; then
+            CHANGELOG=$(git log --oneline --all)
+          else
+            CHANGELOG=$(git log $LATEST_TAG..HEAD --oneline)
+          fi
+          # Escape newlines for GitHub Actions
+          CHANGELOG="${CHANGELOG//'%'/'%25'}"
+          CHANGELOG="${CHANGELOG//$'\n'/'%0A'}"
+          CHANGELOG="${CHANGELOG//$'\r'/'%0D'}"
+          echo "changelog=$CHANGELOG" >> $GITHUB_OUTPUT
+
       - name: Build Changelog
         id: github_release
         uses: mikepenz/release-changelog-builder-action@v5
         env:
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_ACTION }}
+        with:
+          commitMode: true
+          owner: kenkit
+          repo: esp32_mqtt_server
 
       - name: Create Release
         id: create_release
@@ -54,7 +74,7 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          body: ${{steps.github_release.outputs.changelog}}
+          body: ${{steps.blink_changelog.outputs.changelog}}
           draft: false
           prerelease: false
 
